@@ -10,29 +10,40 @@
 
     
     <script src="popup.js"></script>
+    <script src="StatusMessage.js"></script>
 
   </head>
 
   <body  >
     <div class="container">
-      <div class="row">
+      <div class="row" >
 
         <div class="form-group col-xs-9" >
-          <label for="tabProfile">Profile Name:</label>
-          <input type="text" class="form-control" id="tabProfile" defaultValue="date">
+          <label for="tabProfile">  &nbsp;   </label>
+          <input type="text" class="form-control" id="tabProfile" placeHolder="Enter Profile Name">
           </div>
           <div >
-          <input type="button" name="save" class="btn btn-primary btn-md col-xs-3" value="save tabs" id="save_button" margin-top="100px">
+          <input type="button" name="save" class="btn btn-primary btn-md col-xs-3" value="save tabs" id="save_button" >
+
         </div>
       </div>
     </div>
 
-<input type="button" name="save" class="btn btn-primary btn-md col-xs-3" value="show" id="show" margin-top="100px">
-
-
+    <div id="status" class="col-xs-12" style="display: none;"></div>
     
 
+    <div id="saved-list" class="container">
+        
+          <div id="heading"><b>Saved Profiles:</b></div>
+    
+        <div id="savedTabs">
+          <ul id="list" class="list-group">
+            
+          </ul>
+        </div> 
+        
+       
+    </div>
 
- 
-  </body>
+
 </html>

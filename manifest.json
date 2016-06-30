@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
 
-  "name": "TabProfile",
+  "name": "MyTabs",
   "description": "This extension saves the current tabs prfile and one can open the saved tab profile for later use.",
   "version": "1.0",
 

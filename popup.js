@@ -1,10 +1,14 @@
-function onClicked(event) {
+function SaveProfile(event) {
 	
 	chrome.tabs.query( {currentWindow:true},function(arr_tabs){
 
 		//console.log(arr_tabs);
+
 		var ProfileName = document.getElementById("tabProfile").value;	
-		
+		if(!ProfileName){
+			ProfileName = Date();
+			ProfileName = ProfileName.slice(4,25);	
+		}
 		var tabs = [];
 
         for (var i = 0; i < arr_tabs.length ; i++) {		 //gettig the icon info ,url and name from tab
@@ -20,32 +24,156 @@ function onClicked(event) {
 		Profile[ProfileName] = tabs;						//storing the info  with key ProfileName
 		chrome.storage.sync.set(Profile ,function() {
           // Notify that we saved.
-          chrome.storage.sync.getBytesInUse(null, function (bytesInUse){
-          		console.log(bytesInUse);
-          });
-
-
-          alert('Settings saved');});
-
- });
+		DisplayList();
+		// alert('Settings saved');});
+ 		});
+		StatusMessage.showMessage('Tabs Profile added', 1000);
+	});		
 }
-function showProfiles(event) {
+
+function DisplayList() {
+
+	$('#savedTabs #list li').remove();
 
 	chrome.storage.sync.get(null, function(items) {
-    //var allKeys = Object.keys(items);
-    console.log(items);
+	    console.log("here");
+	    var i=1;
+	    $.each(items, function(key,item) {
+	    	
+			$('#savedTabs #list').append('<li> <span id="item_'+i+'" >'+key+' </span> <span  id="arrow_'+i+'" class="glyphicon glyphicon-triangle-right arrow" ></span></li>')
+			//console.log(item);
+			
+			$('#item_'+i).click(function (event){
+				OpenWindow(event, item )
+
+			});
+
+			$('#arrow_'+i).click(function (event){
+
+
+				$('.subList').remove();
+				
+
+				$('.arrow').not(this).removeClass('glyphicon-triangle-bottom');
+				$('.arrow').not(this).addClass('glyphicon-triangle-right');
+				$(this).toggleClass('glyphicon-triangle-right glyphicon-triangle-bottom');
+
+				if($(this).hasClass('glyphicon-triangle-right')){
+					console.log("hello hey ");
+					return;
+				};
+				
+				$(this).parent().append('<ul class="subList"> </ul>');
+				ShowTabList(event, item ,key)
+			});			
+
+			i++;
+
+		});
 	});
+
+
+
 }
+
+function ShowTabList(event , item ,key){
+
+	console.log("pressing the arrow");
+	console.log(item);
+
+	
+	$.each(item, function(i,tab) {
+
+
+			$('.subList').append('<li class="subListLi" ><span class="cross" id="cross_'+i+'">X</span><img src="'+tab['icon_url']+'"></img>  <span class="href" val="'+tab['url']+'" >'+item[i]['title']+' </span></li>');
+
+			$('#cross_'+i).click(function (event){
+				//console.log(event);
+				RemoveTab(event, item ,tab ,key);
+			});
+	});
+	$('.href').click(function(){
+
+		var newURL = $(this).attr("val");
+		chrome.tabs.create({ url: newURL });
+	})
+
+}
+
+function RemoveTab(event , item ,tab ,key){
+
+	console.log(item);
+	console.log(tab);
+
+	for(var i=0; i<item.length; i++){
+        if(item[i] === tab){
+            item.splice(i, 1);  
+            break;
+        }
+    }
+
+    $('.subList li ').remove();
+    ShowTabList(event, item ,key);
+    console.log(item);
+
+    chrome.storage.sync.remove(key, function() {
+
+    	var obj = {};
+    	obj[key] = item;
+    	chrome.storage.sync.set( obj, function() {
+        
+
+    	});
+
+    });
+	
+    StatusMessage.showMessage('Tab removed', 1000);
+}
+
+function OpenWindow(event , item) {
+
+
+	//console.log(item);
+	var array_url = [];
+
+	$.each(item, function(i,tab) {
+
+		console.log(tab["url"]);
+		array_url.push(tab["url"]);
+	});
+
+	chrome.windows.create({ url : array_url })
+
+
+
+
+}
+
 document.addEventListener('DOMContentLoaded', function () {
 
 
-		chrome.storage.sync.clear(function() {
+	/*	chrome.storage.sync.clear(function() {
 			console.log("cleared");
 		});
+	*/
+	//document.getElementById("tabProfile").value ;	
+	document.getElementById("save_button").addEventListener("click", SaveProfile);
+	$("#tabProfile").keydown(function(event){
+        if (event.keyCode == '13') {
+          SaveProfile();
+        }
+      });
+	
+	
 
-		document.getElementById("tabProfile").value = Date();	
-		document.getElementById("save_button").addEventListener("click", onClicked);
 
-		 $("#show").click(showProfiles);
+	DisplayList();
+
+	
+
+
+
+	
+	
 });
-		
+	

@@ -1,11 +1,85 @@
 body,
 html {
-	height: 100px;
-	width: 350px;
+	height: 200px;
+	width: 330px;
 	background: #ffffff;
 	font-family: 'Lato', sans-serif;
+	margin-right: 5px;
+
 }
 
 #save_button{
-	margin-top: 25px;
+	margin-top: 23px;
+}
+
+.container {
+	margin: 0;
+    padding: 0;
+}
+
+hr {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+ul
+{
+    list-style-type: none;
+    margin-left: 10px
+}
+
+ul li{
+
+	font-size: 15px;
+
+}
+
+ul li span:hover {
+	color: #404040;
+	cursor:pointer;
+	background-color:#E0F1EA;
+}
+
+.subList {
+
+	display:block;
+	margin-left: 0px;
+}
+
+.subList li{
+
+	display: block;
+	max-width: 250px;
+	text-overflow: ellipsis;
+	font-size: 15px;
+	color: blue; 
+	overflow: hidden;
+	white-space: nowrap;
+	
+}
+
+.cross {
+	font-size: 15px;
+	color: red; 
+
+}
+
+img{
+	height: 16px;
+	width: 16px;
+	margin-left: 5px;
+}
+.container{
+
+	margin-right: 20px;
+}
+
+.glyphicon {
+    font-size: 13px;
+}
+
+#heading{
+	font-size: 15px;
+	margin-bottom: 3px;
 }
