@@ -40,13 +40,18 @@ function DisplayList() {
 	    var i=1;
 	    $.each(items, function(key,item) {
 	    	
-			$('#savedTabs #list').append('<li> <span id="item_'+i+'" >'+key+' </span> <span  id="arrow_'+i+'" class="glyphicon glyphicon-triangle-right arrow" ></span></li>')
+			$('#savedTabs #list').append('<li> <span id="trash_'+i+'" class="glyphicon glyphicon-trash trash" ></span> <span id="item_'+i+'" >'+key+' </span> <span  id="arrow_'+i+'" class="glyphicon glyphicon-triangle-right arrow" ></span></li>')
 			//console.log(item);
 			
 			$('#item_'+i).click(function (event){
+				
 				OpenWindow(event, item )
-
 			});
+
+			$('#trash_'+i).click(function (event){
+
+				DeleteProfile(key);
+			})
 
 			$('#arrow_'+i).click(function (event){
 
@@ -71,7 +76,15 @@ function DisplayList() {
 
 		});
 	});
+}
 
+function DeleteProfile(key){
+
+	chrome.storage.sync.remove(key, function() {
+
+		 StatusMessage.showMessage('Profile deleted', 1000);
+		 DisplayList();
+    });
 
 
 }
@@ -115,6 +128,12 @@ function RemoveTab(event , item ,tab ,key){
     $('.subList li ').remove();
     ShowTabList(event, item ,key);
     console.log(item);
+
+    if(item.length === 0)
+    {
+    	DeleteProfile(key);
+    	return;
+    }
 
     chrome.storage.sync.remove(key, function() {
 
