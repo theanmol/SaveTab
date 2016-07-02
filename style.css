@@ -4,12 +4,12 @@ html {
 	width: 330px;
 	background: #ffffff;
 	font-family: 'Lato', sans-serif;
-	margin-right: 5px;
+
 
 }
 
 #save_button{
-	margin-top: 28px;
+	margin-top: 27px;
 	height: 28px;
 	width: 80px;
 	text-align: center;
@@ -101,4 +101,14 @@ img{
 #status{
 
 	text-align: center;
+	height: 10px
+}
+
+.form-group.col-xs-9{
+
+	width: 72%;
+
+}
+#saved-list{
+	margin-top: 15px;
 }
